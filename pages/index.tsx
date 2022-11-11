@@ -1,4 +1,3 @@
-import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { Product } from "../utils/typings";
@@ -20,7 +19,6 @@ const Home = () => {
     }),
 
     onSubmit: () => {
-      //alert(JSON.stringify(formik.values, null, 2));
       fetch("https://dummyjson.com/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -32,7 +30,7 @@ const Home = () => {
       })
         .then((res) => res.json())
         .then((res) => localStorage.setItem("token", res.token))
-        .then((res) => router.push("/productlistings"));
+        .then(() => router.push("/productlistings"));
     },
   });
 
