@@ -1,46 +1,39 @@
 import React from "react";
 import { Product } from "../../utils/typings";
-import { useQuery } from "react-query";
 import { useRouter } from "next/router";
-import CircularProgress from "@mui/material/CircularProgress";
 import Select from "../../utils/Select";
-
 import Breadcrumbs from "../../utils/BreadCrumbs";
+
 interface Props {
-  data: Product;
+  product: Product;
 }
-function SingleProduct({ data }: Props) {
+function SingleProduct({ product }: Props) {
   const router = useRouter();
-  const { id } = router.query;
 
-  const fetchProduct = async () => {
-    const response = await fetch(`https://dummyjson.com/products/${id}`);
-    const data = await response.json();
-    return data;
+  React.useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      router.push("/");
+    }
+  }, []);
+
+  const logoutUser = () => {
+    localStorage.removeItem("token");
+    router.push("/");
   };
-  const { data: product, isLoading, error } = useQuery("product", fetchProduct);
 
-  if (isLoading) {
-    return (
-      <div className="absolute w-[60%] mx-auto mt-[15%] left-[50%]">
-        <CircularProgress />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="relative w-[60%] mx-auto mt-[40%]">
-        There was an error fetching products. Please try again later.
-      </div>
-    );
-  }
   return (
     <div className="container mx-auto font-kumbh text-base">
-      <nav className="flex container justify-between fixed z-20 border-b-2 border-b-slate-200 bg-white  lg:pr-8">
+      <button
+        className=" z-30 absolute right-5 top-5 py-2  px-4 rounded bg-[#027fff] justify-end "
+        onClick={() => logoutUser()}
+      >
+        Sign out
+      </button>
+
+      <nav className="flex container justify-between fixed z-20 border-b-2 border-b-slate-200 bg-white mt-6 lg:pr-8">
         <div className="flex mr-6 pt-6 ">
           <div role="presentation">
-            <Breadcrumbs title={product.title} />
+            <Breadcrumbs title={product?.title} />
           </div>
         </div>
       </nav>
@@ -49,20 +42,20 @@ function SingleProduct({ data }: Props) {
         <section className="h-fit flex-col gap-8 mt-16 sm:flex sm:flex-row sm:gap-4 sm:h-full sm:mt-24 sm:mx-2 md:gap-8 md:mx-4 lg:flex-col lg:mx-0 lg:mt-36">
           <picture className="relative flex items-center bg-orange sm:bg-transparent">
             <img
-              src={product?.images && product?.images[0]}
+              src={product?.images && product?.images[0].toString()}
               alt={product?.title}
               className="block sm:rounded-xl xl:w-[70%] xl:rounded-xl m-auto pointer-events-none transition duration-300 lg:w-3/4 lg:pointer-events-auto lg:cursor-pointer lg:hover:shadow-xl"
               id="hero"
             />
           </picture>
           <div className="thumbnails hidden justify-between gap-4 m-auto sm:flex sm:flex-col sm:justify-start sm:items-center sm:h-fit md:gap-5 lg:flex-row">
-            {product?.images?.map((image: string, index: number) => (
+            {product?.images?.map((image, index) => (
               <div
                 key={index}
                 className="w-1/5 cursor-pointer rounded-xl sm:w-28 md:w-32 lg:w-[72px] xl:w-[78px] ring-active"
               >
                 <img
-                  src={image}
+                  src={image.toString()}
                   alt="thumbnail"
                   className="rounded-xl hover:opacity-50 transition active"
                   id="thumb-1"
@@ -112,3 +105,13 @@ function SingleProduct({ data }: Props) {
 }
 
 export default SingleProduct;
+
+export async function getServerSideProps(context: {
+  query: { id: any };
+  id: any;
+}) {
+  const { id } = context.query;
+  const res = await fetch(`https://dummyjson.com/products/${id}`);
+  const product = await res.json();
+  return { props: { product } };
+}

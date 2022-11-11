@@ -24,11 +24,12 @@ const Home = () => {
         }),
       })
         .then((res) => res.json())
-        .then((res) => localStorage.setItem("token", res.token))
+        .then((res) => {
+          localStorage.setItem("token", res.token);
+        })
         .then(() => router.push("/product-listings"));
     },
   });
-
   return (
     <div className="relative  flex flex-col md:items-center md:justify-center w-screen h-screen md:bg-transparent">
       <Head>

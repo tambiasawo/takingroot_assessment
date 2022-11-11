@@ -3,13 +3,23 @@ import React, { useState } from "react";
 import { Product } from "../utils/typings";
 import SingleProduct from "../components/Product";
 import { useQuery } from "react-query";
-import { useUser } from "../lib/user";
 import CircularProgress from "@mui/material/CircularProgress";
-
+import { useRouter } from "next/router";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 function Products() {
-  //const { user } = useUser({ redirectTo: "/" });
+  const router = useRouter();
+  React.useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      router.push("/");
+    }
+  }, []);
+
+  const logoutUser = () => {
+    localStorage.removeItem("token");
+    router.push("/");
+  };
+
   const [searchValue, setSearchValue] = useState<string>("");
 
   const onSelectHandler = (item: any) => {
@@ -38,14 +48,27 @@ function Products() {
   });
 
   return (
-    <div className="relative items-center">
+    <div className=" items-center mt-0">
       <Head>
         <title>E-commerce</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <div className="w-[60%] mx-auto mt-10 z-30">
+      <main className="relative w-[90%] mx-auto top-0">
+        <button
+          className=" right-5 hidden top-0 py-2 sm:flex px-4 float-right rounded bg-[#027fff] justify-end "
+          onClick={() => logoutUser()}
+        >
+          Sign out
+        </button>
+        <a
+          onClick={() => logoutUser()}
+          className="flex items-center mt-5 justify-end cursor-pointer sm:hidden"
+        >
+          Sign Out
+        </a>
+
+        <div className=" relative w-[60%] mx-auto mt-8 z-30">
           <ReactSearchAutocomplete
             items={products}
             placeholder="Search"
@@ -76,11 +99,3 @@ function Products() {
 }
 
 export default Products;
-
-export async function getStaticProps(context: any) {
-  return {
-    props: {
-      protected: true,
-    },
-  };
-}
