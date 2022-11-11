@@ -11,7 +11,7 @@ function BreadCrumbs({ title }: Props) {
     <div>
       <div role="presentation">
         <Breadcrumbs aria-label="breadcrumb">
-          <Link underline="hover" color="inherit" href="/productlistings">
+          <Link underline="hover" color="inherit" href="/product-listings">
             Home
           </Link>
 

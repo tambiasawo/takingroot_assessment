@@ -20,7 +20,7 @@ function Product({ product }: SingleProduct) {
           {product.title}
         </h3>
         <p className="mt-1 text-center text-lg font-medium text-gray-900">
-          {product.price}
+          ${product.price}
         </p>
         <div className="mt-1 text-center text-md  text-gray-900">
           {product.description}

@@ -37,14 +37,6 @@ function Products() {
     keepPreviousData: true,
   });
 
-  if (isLoading) {
-    return (
-      <div className="relative w-[60%] mx-auto mt-[40%]">
-        <CircularProgress />
-      </div>
-    );
-  }
-
   return (
     <div className="relative items-center">
       <Head>
@@ -53,26 +45,31 @@ function Products() {
       </Head>
 
       <main>
-        {
-          <div className="w-[60%] mx-auto mt-10 z-30">
-            <ReactSearchAutocomplete
-              items={products}
-              fuseOptions={{ keys: ["title", "description"] }}
-              resultStringKeyName="title"
-              onSearch={onSearchHandler}
-              onSelect={onSelectHandler}
-              inputSearchString={searchValue}
-              inputDebounce={300}
-              onClear={() => setSearchValue("")}
-            />
-          </div>
-        }
-
-        <div className=" relative w-[90%] mx-auto top-32 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-          {products?.map((product: Product) => (
-            <SingleProduct key={product.id} product={product} />
-          ))}
+        <div className="w-[60%] mx-auto mt-10 z-30">
+          <ReactSearchAutocomplete
+            items={products}
+            placeholder="Search"
+            fuseOptions={{ keys: ["title", "description"] }}
+            resultStringKeyName="title"
+            onSearch={onSearchHandler}
+            onSelect={onSelectHandler}
+            inputSearchString={searchValue}
+            inputDebounce={300}
+            onClear={() => setSearchValue("")}
+          />
         </div>
+
+        {isLoading ? (
+          <div className="absolute w-[60%] mx-auto mt-[15%] left-[50%]">
+            <CircularProgress />
+          </div>
+        ) : (
+          <div className=" relative w-[90%] mx-auto top-32 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+            {products?.map((product: Product) => (
+              <SingleProduct key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );

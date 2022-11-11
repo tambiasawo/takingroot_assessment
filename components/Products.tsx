@@ -1,10 +1,8 @@
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Product } from "../utils/typings";
 import SingleProduct from "../components/Product";
-import { useMutation, useQuery } from "react-query";
-import { useRouter } from "next/router";
-import { Autocomplete, TextField } from "@mui/material";
+import { useQuery } from "react-query";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 function Products() {
@@ -16,8 +14,6 @@ function Products() {
     fetchProduct();
   };
   const fetchProduct = async () => {
-    console.log(searchValue);
-    console.log("hellorrr");
     const response = await fetch(
       `https://dummyjson.com/products/search?q=${searchValue}`
     );

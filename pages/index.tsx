@@ -1,20 +1,15 @@
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
-import { Product } from "../utils/typings";
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/router";
-
-interface Props {
-  products: Product[];
-}
 
 const Home = () => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: { username: "", password: "" },
     validationSchema: Yup.object({
-      username: Yup.string().required("Required"),
+      username: Yup.string().required("Required").min(2),
       password: Yup.string().required("Required").min(2).max(16),
     }),
 
@@ -25,23 +20,26 @@ const Home = () => {
         body: JSON.stringify({
           username: formik.values.username,
           password: formik.values.password,
-          // expiresInMins: 60, // optional
+          expiresInMins: 60,
         }),
       })
         .then((res) => res.json())
         .then((res) => localStorage.setItem("token", res.token))
-        .then(() => router.push("/productlistings"));
+        .then(() => router.push("/product-listings"));
     },
   });
 
   return (
-    <div className="relative items-center">
+    <div className="relative  flex flex-col md:items-center md:justify-center w-screen h-screen md:bg-transparent">
       <Head>
         <title>E-commerce</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div>
+        <h1 className="text-center font-semibold text-xl  md:text-2xl mt-24 mb-10">
+          FE Assessement App
+        </h1>{" "}
         <form
           onSubmit={formik.handleSubmit}
           className="relative py-10 px-6 space-y-3 md:mt-0 md:max-w-md md:px-14"
@@ -53,7 +51,7 @@ const Home = () => {
                 : ""
             }`}
             type="username"
-            placeholder="username"
+            placeholder="Username"
             {...formik.getFieldProps("username")}
           />
 
