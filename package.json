@@ -6,12 +6,19 @@
     "start": "next start"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.10.13",
+    "formik": "^2.2.9",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-query": "^3.39.2"
+    "react-query": "^3.39.2",
+    "react-search-autocomplete": "^8.0.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/node": "18.11.3",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
