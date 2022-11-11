@@ -78,15 +78,15 @@ function SingleProduct({ product }: Props) {
           <div className="flex items-center justify-between mb-6 sm:flex-col sm:items-start">
             <div className="flex items-center gap-4">
               <h3 className="text-very-dark font-bold text-3xl inline-block">
-                ${product?.price}
-              </h3>
-            </div>
-            <p className="text-dark-grayish w-fit  decoration-dark-grayish decoration-1 my-auto">
-              <span className="line-through mr-5">
-                $
+                ${" "}
                 {Math.round(
                   product?.price * ((100 - product?.discountPercentage) / 100)
                 )}
+              </h3>
+            </div>
+            <p className="text-dark-grayish w-fit  decoration-dark-grayish decoration-1 my-auto">
+              <span className=" text-red-500 line-through mr-5">
+                ${product?.price}
               </span>
               {Math.round(product?.discountPercentage)}% Off
             </p>
